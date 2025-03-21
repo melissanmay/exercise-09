@@ -12,6 +12,7 @@ editor:
 ```{r}
 library(broom)
 library(ggplot2)
+library(visdat)
 data(airquality)
 ?airquality
 ```
@@ -19,7 +20,7 @@ data(airquality)
 ## Question 2:
 
 ```{r}
-vis_dat::vis_dat(airquality)
+vis_dat(airquality)
 ```
 
 The data definitely seems to need some cleaning.

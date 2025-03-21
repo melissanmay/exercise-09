@@ -1,0 +1,58 @@
+[
+  {
+    "objectID": "exercise-09.html",
+    "href": "exercise-09.html",
+    "title": "Daily Exercise 9/10",
+    "section": "",
+    "text": "library(broom)\nlibrary(ggplot2)\nlibrary(visdat)\n\nWarning: package 'visdat' was built under R version 4.4.3\n\ndata(airquality)\n?airquality\n\nstarting httpd help server ... done"
+  },
+  {
+    "objectID": "exercise-09.html#question-1",
+    "href": "exercise-09.html#question-1",
+    "title": "Daily Exercise 9/10",
+    "section": "",
+    "text": "library(broom)\nlibrary(ggplot2)\nlibrary(visdat)\n\nWarning: package 'visdat' was built under R version 4.4.3\n\ndata(airquality)\n?airquality\n\nstarting httpd help server ... done"
+  },
+  {
+    "objectID": "exercise-09.html#question-2",
+    "href": "exercise-09.html#question-2",
+    "title": "Daily Exercise 9/10",
+    "section": "Question 2:",
+    "text": "Question 2:\n\nvis_dat(airquality)\n\n\n\n\n\n\n\n\nThe data definitely seems to need some cleaning. I immediately noticed a few different missing values in the categories of ozone and solar radiation.\n\nairquality_cleaned &lt;- na.omit(airquality)\n\nThe above code removes every row with a NA value in a column."
+  },
+  {
+    "objectID": "exercise-09.html#question-3",
+    "href": "exercise-09.html#question-3",
+    "title": "Daily Exercise 9/10",
+    "section": "Question 3:",
+    "text": "Question 3:\n\ncor(airquality_cleaned[, c(\"Ozone\", \"Wind\", \"Temp\")], use = \"complete.obs\")\n\n           Ozone       Wind       Temp\nOzone  1.0000000 -0.6124966  0.6985414\nWind  -0.6124966  1.0000000 -0.4971897\nTemp   0.6985414 -0.4971897  1.0000000\n\n\nThe above code is used to test the correlations between ozone, wind, and temperature. Temperature has the highest correlation with ozone, with a correlation of 0.6985414."
+  },
+  {
+    "objectID": "exercise-09.html#question-4",
+    "href": "exercise-09.html#question-4",
+    "title": "Daily Exercise 9/10",
+    "section": "Question 4:",
+    "text": "Question 4:\n\nlm_model &lt;- lm(Ozone ~ Temp, data = airquality_cleaned)\nsummary(lm_model)\n\n\nCall:\nlm(formula = Ozone ~ Temp, data = airquality_cleaned)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-40.922 -17.459  -0.874  10.444 118.078 \n\nCoefficients:\n             Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept) -147.6461    18.7553  -7.872 2.76e-12 ***\nTemp           2.4391     0.2393  10.192  &lt; 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 23.92 on 109 degrees of freedom\nMultiple R-squared:  0.488, Adjusted R-squared:  0.4833 \nF-statistic: 103.9 on 1 and 109 DF,  p-value: &lt; 2.2e-16\n\n\n\nThe above code fits a linear model to the cleaned data, predicting ozone from the predictor of temperature.\nI chose to use temperature as the predictor because it had the strongest correlation with ozone. While wind has a negative correlation with ozone of -0.6124966, temperature had the slightly stronger correlation, and thus I thought it would be best to use when running this model.\nWhen running summary() to preview the model, we can see information such as the intercepts, standard errors, and predicted temperatures.\nThe p-value of the dataset is &lt; 2.2e-16. P-values indicate the likelihood of rejecting the null hypothesis, and the smaller the p-value, the higher the likelihood of rejecting the null. In this dataset, this means it is unlikely that the two variables don’t have a tangible correlation\nThe F-statistic is 103.9. High f-statistics indicate that there is more variation between groups than within groups. This means that the differences between the baseline model and the model with temperature included are unlikely to be caused by chance.\nThe R^2 value of 0.488 suggests that 48.8% of the variation observed in Ozone levels can be explained by temperature. This is a moderate R^2 predictor. There are other important factors that influence Ozone, but temperature is still a strong predicting factor.\nThe residual standard error (RSE) is 23.92, meaning that the actual Ozone values tend to deviate from the predicted values by about 24 ppb on average.\nIn conclusion, the model does seem like a valid model. Its moderate R^2 and high residuals suggest that there are definitely other factors playing a role in predicting Ozone, but this is definitely a good start to predicting Ozone values."
+  },
+  {
+    "objectID": "exercise-09.html#question-5",
+    "href": "exercise-09.html#question-5",
+    "title": "Daily Exercise 9/10",
+    "section": "Question 5:",
+    "text": "Question 5:\nThe R^2 value found was 0.488, meaning that temperature explains about 48.8% of the variation in ozone levels. While this is a moderate value, it still suggests that temperature has a noticeable effect on ozone. The remaining 51.2% of variation is influenced by other factors not included in the model, which could include variables like wind, solar radiation, or other atmospheric conditions."
+  },
+  {
+    "objectID": "exercise-09.html#question-6",
+    "href": "exercise-09.html#question-6",
+    "title": "Daily Exercise 9/10",
+    "section": "Question 6:",
+    "text": "Question 6:\n\na &lt;- augment(lm_model)"
+  },
+  {
+    "objectID": "exercise-09.html#question-7",
+    "href": "exercise-09.html#question-7",
+    "title": "Daily Exercise 9/10",
+    "section": "Question 7:",
+    "text": "Question 7:\n\nggplot(a, aes(x = Ozone, y = .fitted)) +\n  geom_point() +\n  geom_abline(intercept = 0, slope = 1, color = \"red\") +\n  labs(\n    title = \"Actual vs. Predicted Ozone Levels\",\n    x = \"Actual Ozone\",\n    y = \"Predicted Ozone\",\n    subtitle = paste(\"Correlation:\", round(cor(a$Ozone, a$.fitted), 2))\n  )"
+  }
+]
