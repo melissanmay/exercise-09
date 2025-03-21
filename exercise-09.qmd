@@ -1,5 +1,98 @@
 ---
-title: "exercise-09"
+title: "Daily Exercise 9/10"
+author: "Melissa May"
 format: html
+editor: 
+  markdown: 
+    wrap: sentence
 ---
 
+## Question 1:
+
+```{r}
+library(broom)
+library(ggplot2)
+data(airquality)
+?airquality
+```
+
+## Question 2:
+
+```{r}
+vis_dat::vis_dat(airquality)
+```
+
+The data definitely seems to need some cleaning.
+I immediately noticed a few different missing values in the categories of ozone and solar radiation.
+
+```{r}
+airquality_cleaned <- na.omit(airquality)
+```
+
+The above code removes every row with a NA value in a column.
+
+## Question 3:
+
+```{r}
+cor(airquality_cleaned[, c("Ozone", "Wind", "Temp")], use = "complete.obs")
+```
+
+The above code is used to test the correlations between ozone, wind, and temperature.
+Temperature has the highest correlation with ozone, with a correlation of 0.6985414.
+
+## Question 4:
+
+```{r}
+lm_model <- lm(Ozone ~ Temp, data = airquality_cleaned)
+summary(lm_model)
+```
+
+-   The above code fits a linear model to the cleaned data, predicting ozone from the predictor of temperature.
+
+-   I chose to use temperature as the predictor because it had the strongest correlation with ozone.
+    While wind has a negative correlation with ozone of -0.6124966, temperature had the slightly stronger correlation, and thus I thought it would be best to use when running this model.
+
+-   When running summary() to preview the model, we can see information such as the intercepts, standard errors, and predicted temperatures.
+
+-   The p-value of the dataset is \< 2.2e-16.
+    P-values indicate the likelihood of rejecting the null hypothesis, and the smaller the p-value, the higher the likelihood of rejecting the null.
+    In this dataset, this means it is unlikely that the two variables don't have a tangible correlation
+
+-   The F-statistic is 103.9.
+    High f-statistics indicate that there is more variation between groups than within groups.
+    This means that the differences between the baseline model and the model with temperature included are unlikely to be caused by chance.
+
+-   The R\^2 value of 0.488 suggests that 48.8% of the variation observed in Ozone levels can be explained by temperature.
+    This is a moderate R\^2 predictor.
+    There are other important factors that influence Ozone, but temperature is still a strong predicting factor.
+
+-   The residual standard error (RSE) is 23.92, meaning that the actual Ozone values tend to deviate from the predicted values by about 24 ppb on average.
+
+-   In conclusion, the model does seem like a valid model.
+    Its moderate R\^2 and high residuals suggest that there are definitely other factors playing a role in predicting Ozone, but this is definitely a good start to predicting Ozone values.
+
+## Question 5:
+
+The R\^2 value found was 0.488, meaning that temperature explains about 48.8% of the variation in ozone levels.
+While this is a moderate value, it still suggests that temperature has a noticeable effect on ozone.
+The remaining 51.2% of variation is influenced by other factors not included in the model, which could include variables like wind, solar radiation, or other atmospheric conditions.
+
+## Question 6:
+
+```{r}
+a <- augment(lm_model)
+```
+
+## Question 7:
+
+```{r}
+ggplot(a, aes(x = Ozone, y = .fitted)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1, color = "red") +
+  labs(
+    title = "Actual vs. Predicted Ozone Levels",
+    x = "Actual Ozone",
+    y = "Predicted Ozone",
+    subtitle = paste("Correlation:", round(cor(a$Ozone, a$.fitted), 2))
+  )
+```
