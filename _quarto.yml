@@ -1,0 +1,10 @@
+project: 
+  type: website
+  output-dir: docs
+
+title: "Exercise #9/10: Analyzing Air Quality Data"
+author: "Melissa May"
+
+format:
+  html:
+    self-contained: true
